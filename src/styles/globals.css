@@ -85,7 +85,3 @@
   opacity: 1;
   transform: translateX(0);
 }
-.triangle {
-  background-image: linear-gradient(to bottom right, lightgray 50%, lightblue 50%);
-  height: 100vh;
-}
