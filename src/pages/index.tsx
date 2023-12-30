@@ -1,3 +1,4 @@
+import { Lobster_Two, Bubblegum_Sans } from "next/font/google";
 import {
 	Select,
 	SelectContent,
@@ -6,9 +7,17 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-
+import {
+	LoopIcon
+} from "@radix-ui/react-icons"
 import { countries } from "@/lib/countries"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+
+const bubblegum_sans = Bubblegum_Sans({
+	weight: "400",
+	subsets: ["latin"]
+});
 
 
 export async function getServerSideProps() {
@@ -21,9 +30,10 @@ export async function getServerSideProps() {
 };
 
 async function getData() {
-	let data = await (await fetch("https://api.frankfurter.app/latest?base=usd", { next: { revalidate: 3600 } })).json();
+	let data = await (await fetch("https://api.frankfurter.app/latest?base=usd", { next: { revalidate: Number.POSITIVE_INFINITY } })).json();
 	return data.rates
 }
+
 
 const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 	let [fromCurrency, setFromCurrency] = useState("INR");
@@ -31,31 +41,48 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 	let [toCurrency, setToCurrency] = useState("USD");
 	let [toValue, setToValue] = useState(1 / conversion_table["INR"] * conversion_table["USD"]);
 
-	return (
-		<>
-			<div className=" flex flex-row w-full item-center justify-center p-3">
-				<div className=" flex flex-row items-end  p-2  " >
-					<div className="flex flex-col">
-						{/* <div className=" p-4 border-slate-200  border-2 rounded-lg "> */}
-						<div>
-							<Input
-								type="text"
-								value={fromValue == 0 ? "" : fromValue.toString()}
-								className=" border-2 border-slate-200 rounded-lg p-2 "
-								onChange={
-									(e) => {
+	const [isVisible, setIsVisible] = useState(false);
+
+	useEffect(() => {
+		// Set the logo as visible after a delay (you can adjust the delay as needed)
+		const timeoutId = setTimeout(() => {
+			setIsVisible(true);
+		}, 500);
+
+		// Clear the timeout on component unmount
+		return () => clearTimeout(timeoutId);
+	}, []);
+
+
+	return <>
+
+		<div className="  flex flex-col   w-screen h-screen items-center   justify-center  p-4  ">
+			<div className={`logo-container ${isVisible ? 'slide-in' : ''}`}>
+				<span className={cn(" text-5xl p-1   ", bubblegum_sans.className)} > Currency Converter</span>
+			</div>
+			<div className="  p-10 rounded-lg shadow-md  border-2 border-zinc-50  flex flex-col items-start    ">
+				<div className="  flex flex-row  item-center   ">
+					<div className="  flex flex-row items-end      ">
+						<div className="  flex flex-col  gap-4    ">
+							<div>
+								<Input
+									type=" text"
+									value={fromValue == 0 ? "" : fromValue.toString()}
+									className="  border-2 border-slate-200 rounded-lg p-2 "
+									onChange={(e) => {
 										// debugger;
-										const regex = new RegExp('[0-9.]*', 'm')
-										const whitespace = new RegExp('/^ *$/mg', 'gm')
+										const regex = new RegExp('[0-9.]*', 'm');
+										const whitespace = new RegExp('/^ *$/mg', 'gm');
 										if (whitespace.exec(e.target.value) !== null || e.target.value == "") {
 											console.log("`` in 'from' value");
-											setFromValue(0)
-											setToValue(0)
+											setFromValue(0);
+											setToValue(0);
 										}
 										else if (regex.exec(e.target.value) !== null) {
 											const from = e.target.value;
-											setFromValue(parseFloat(from));
-											const to_value = parseFloat(from) / conversion_table[fromCurrency] * conversion_table[toCurrency];
+											setFromValue(parseFloat(parseFloat(from).toFixed(2)));
+											const to_value = parseFloat((parseFloat(from)
+												/ conversion_table[fromCurrency] * conversion_table[toCurrency]).toFixed(2));
 											if (to_value.toString() != "NaN") {
 												setToValue(to_value);
 											}
@@ -67,41 +94,50 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 											console.log("NaN in 'from' value");
 										}
 										// debugger;
-									}
-								} />
-						</div>
-						<Select onValueChange={(x ) => {
-							setFromCurrency(x);
-							setToValue(fromValue / conversion_table[x] * conversion_table[toCurrency]);
-						}}
-							value={fromCurrency}
-						>
-							<SelectTrigger className=" w-full">
-								<SelectValue placeholder="Currency" />
-							</SelectTrigger>
-							<SelectContent className=" bg-white h-40 w-full">
-								{countries.map((x) =>
-									<SelectItem value={x}
-										className=" w-full ">{x}</SelectItem>
-								)}
-							</SelectContent>
-						</Select>
+									}} />
+							</div>
+							<div className="  w-full  ">
+								<Select onValueChange={(x) => {
+									setFromCurrency(x);
+									setToValue(parseFloat((fromValue / conversion_table[x] * conversion_table[toCurrency]).toFixed(2)));
+								}}
+									value={fromCurrency}
+								>
+									<SelectTrigger className="   p-1 bg-zinc-100  border-2 border-zinc-200 rounded-lg   ">
+										<SelectValue placeholder=" Currency" />
+									</SelectTrigger>
+									<SelectContent className="  bg-white h-40 w-full ">
+										{
+											Object.entries(countries).map(([code, name], idx) =>
+												<SelectItem key={code} value={code}>{code}
+													<span className="hidden lg:contents "> - {name}
+													</span></SelectItem>
+											)}
+									</SelectContent >
+								</Select>
+							</div>
 
-					</div>
-					<div className=" p-2 ">
-						<button onClick={() => {
-							setToCurrency(fromCurrency);
-							setFromCurrency(toCurrency);
-						}}>Switch</button>
-					</div>
-					<div className="flex flex-col">
-						<div className="">
-							<Input
-								type="text"
-								value={toValue == 0 ? "" : toValue.toString()}
-								className=" border-2 border-slate-200 rounded-lg p-2 "
-								onChange={
-									(e) => {
+						</div>
+						<div className="  pl-4 pr-4  ">
+							<button onClick={() => {
+								setToCurrency(fromCurrency);
+								setFromCurrency(toCurrency);
+								setToValue(parseFloat(fromValue.toFixed(2)));
+								setFromValue(parseFloat(toValue.toFixed(2)));
+								// __AUTO_GENERATED_PRINTF_START__
+								console.log("Home#(anon) 1"); // __AUTO_GENERATED_PRINTF_END__
+
+							}}>
+								<LoopIcon />
+							</button>
+						</div>
+						<div className="  flex flex-col  gap-4    ">
+							<div>
+								<Input
+									type=" text"
+									value={toValue == 0 ? "" : toValue.toFixed(2).toString()}
+									className="  border-2 border-slate-200 rounded-lg p-2 "
+									onChange={(e) => {
 										if (!e.target.value.match(/^[0-9]*([.,][0-9]+)?$/)) {
 											// setFromValue(parseFloat(e.target.value));
 											// setToValue(fromValue / conversion_table.rates[fromCurrency] * conversion_table.rates[toCurrency]);
@@ -109,30 +145,39 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 										else {
 											console.log("NaN in 'to' value");
 										}
-									}
-								} />
-						</div>
-						<Select onValueChange={(x) => {
-							setToCurrency(x);
-							setToValue(fromValue / conversion_table[fromCurrency] * conversion_table[x]);
-						}}
-							value={toCurrency}
-						>
-							<SelectTrigger className=" w-full p-2  bg-zinc-200 ">
-								<SelectValue placeholder="Currency" />
-							</SelectTrigger>
-							<SelectContent className=" bg-white h-40 w-full" >
-								{countries.map((x) =>
-									<SelectItem value={x}
-										className="  ">{x}</SelectItem>
-								)}
-							</SelectContent>
-						</Select>
-					</div>
+									}} />
+							</div>
+							<div className="  w-full  ">
+								<Select onValueChange={(x) => {
+									setToCurrency(x);
+									setToValue(fromValue / conversion_table[fromCurrency] * conversion_table[x]);
+								}}
+									value={toCurrency}
+									autoComplete="true"
+								>
+									<SelectTrigger className="  w-full p-1 bg-zinc-100  border-2 border-zinc-200 rounded-lg   ">
+										<SelectValue placeholder=" Currency" className=" items-end" />
+									</SelectTrigger>
+									<SelectContent className="  bg-white h-40 w-full rounded-lg   ">
+										{
+											Object.entries(countries).map(([code, name]) =>
+												<SelectItem key={code} value={code}>
 
+													{code}
+													<span className="hidden lg:contents "> {name}</span> </SelectItem>
+											)}
+									</SelectContent>
+								</Select>
+							</div>
+						</div>
+
+					</div>
 				</div>
+				<span className=" text-gray-500  text-sm  pt-4 " >
+					1 {fromCurrency} ≈ {(conversion_table[toCurrency] / conversion_table[fromCurrency]).toFixed(2).toString()} {toCurrency}
+				</span>
 			</div>
-		</>
-	);
+		</div >
+	</>;
 }
-export default Home;
+export default Home
