@@ -59,12 +59,12 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 
 	return <>
 
-		<div className="  flex flex-col   w-screen h-screen items-center   justify-center  p-4  gray-block diagonal-end">
-			<div className=" gray-block__inner ">
+		<div className="  flex flex-col   w-screen h-screen items-center   justify-center  p-4 triangle bg-white ">
+			<div className="  ">
 				<div className={`logo-container ${isVisible ? 'slide-in' : ''}`}>
 					<span className={cn(" text-5xl p-1   ", bubblegum_sans.className)} > Currency Converter</span>
 				</div>
-				<div className="  p-10 rounded-lg shadow-md  border-2 border-zinc-50  flex flex-col items-start    ">
+				<div className="  p-10 rounded-lg shadow-md  border-2 border-zinc-50  flex flex-col items-start   bg-white ">
 					<div className="  flex flex-row  item-center   ">
 						<div className="  flex flex-row items-end      ">
 							<div className="  flex flex-col  gap-4    ">
