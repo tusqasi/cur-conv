@@ -1,4 +1,4 @@
-import { Lobster_Two, Bubblegum_Sans } from "next/font/google";
+import { Bubblegum_Sans } from "next/font/google";
 import {
 	Select,
 	SelectContent,
@@ -108,7 +108,7 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 									</SelectTrigger>
 									<SelectContent className="  bg-white h-40 w-full ">
 										{
-											Object.entries(countries).map(([code, name], idx) =>
+											Object.entries(countries).map(([code, name], _idx) =>
 												<SelectItem key={code} value={code}>{code}
 													<span className="hidden lg:contents "> - {name}
 													</span></SelectItem>
@@ -162,7 +162,6 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 										{
 											Object.entries(countries).map(([code, name]) =>
 												<SelectItem key={code} value={code}>
-
 													{code}
 													<span className="hidden lg:contents "> {name}</span> </SelectItem>
 											)}
