@@ -1,5 +1,7 @@
 # 💵  ➡️ cur-conv ➡️ 💶
 
-A currency converter
+![Demo image](https://i.imgur.com/vuJxCal.png)
 
-Made using NextJs, shadcn stuff.
+**A currency converter**
+Made using NextJs, shadcn stuff.  
+
