@@ -151,7 +151,7 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 
 	return (
 		<>
-			<div className="  w-screen h-screen  flex flex-col  ">
+			<div className=" h-[100svh]  lg:w-screen lg:h-screen  flex flex-col flex flex-col justify-center items-center ">
 				<div className="  flex flex-col w-full h-full  items-center   justify-center  p-4  bg-white ">
 					<div
 						className={`logo-container ${isVisible ? "slide-in" : ""
@@ -309,11 +309,12 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 						</span>
 					</div>
 				</div>
-				<footer className="mt-auto py-4 flex justify-around">
+				<footer className="mt-auto py-4 gap-8 flex justify-evenly w-max pb-5 ">
 					<Link
 						aria-label="Twitter"
 						href="https://twitter.com/tusharkuntawar"
 						target="_blank"
+						className=" transition-transform  scale-100 hover:scale-11  "
 					>
 						<div className="bg-black rounded-full text-slate-300 p-3">
 						<TwitterIcon className="w-4 h-4" />
@@ -323,6 +324,7 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 						aria-label="LinkedIn"
 						href="https://www.linkedin.com/in/tushar-kuntawar-9a7b8923b/"
 						target="_blank"
+						className=" transition-transform  scale-100 hover:scale-110  "
 					>
 						<div className="bg-black rounded-full text-slate-300 p-3">
 						<LinkedinIcon className="w-4 h-4" />
@@ -332,6 +334,7 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 						aria-label="GitHub"
 						href="https://github.com/tusqasi/cur-conv"
 						target="_blank"
+						className=" transition-transform  scale-100 hover:scale-110  "
 					>
 						<div className="bg-black rounded-full text-slate-300 p-3">
 							<GithubIcon className="w-4 h-4" />
