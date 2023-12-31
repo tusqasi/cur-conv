@@ -9,9 +9,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { countries } from "@/lib/countries";
-import { useEffect, useState } from "react";
+import { JSX, SVGProps, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Head from "next/head";
 
 const bubblegum_sans = Bubblegum_Sans({
 	weight: "400",
@@ -69,7 +70,7 @@ async function getData() {
 	).rates;
 	return data;
 }
-function GithubIcon(props) {
+function GithubIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 	return (
 		<svg
 			{...props}
@@ -89,7 +90,7 @@ function GithubIcon(props) {
 	);
 }
 
-function LinkedinIcon(props) {
+function LinkedinIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 	return (
 		<svg
 			{...props}
@@ -110,7 +111,7 @@ function LinkedinIcon(props) {
 	);
 }
 
-function TwitterIcon(props) {
+function TwitterIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 	return (
 		<svg
 			{...props}
@@ -151,7 +152,13 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 
 	return (
 		<>
-			<div className=" h-[100svh]  lg:w-screen lg:h-screen  flex flex-col flex flex-col justify-center items-center ">
+			<Head>
+				<meta property="og:title" content="moneyconvert" />
+				<meta property="og:type" content="website" />
+				<meta property="og:url" content="https://moneyconvert.vercel.app" />
+				<meta property="og:image" content="https://i.imgur.com/vuJxCal.png" />
+			</Head>
+			<div className=" h-[100svh]  lg:w-screen lg:h-screen  flex flex-col justify-center items-center ">
 				<div className="  flex flex-col w-full h-full  items-center   justify-center  p-4  bg-white ">
 					<div
 						className={`logo-container ${isVisible ? "slide-in" : ""
@@ -317,7 +324,7 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 						className=" transition-transform  scale-100 hover:scale-11  "
 					>
 						<div className="bg-black rounded-full text-slate-300 p-3">
-						<TwitterIcon className="w-4 h-4" />
+							<TwitterIcon className="w-4 h-4" />
 						</div>
 					</Link>
 					<Link
@@ -327,7 +334,7 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 						className=" transition-transform  scale-100 hover:scale-110  "
 					>
 						<div className="bg-black rounded-full text-slate-300 p-3">
-						<LinkedinIcon className="w-4 h-4" />
+							<LinkedinIcon className="w-4 h-4" />
 						</div>
 					</Link>
 					<Link
