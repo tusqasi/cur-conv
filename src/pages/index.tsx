@@ -153,10 +153,11 @@ const Home: React.FC<{ conversion_table: any }> = ({ conversion_table }) => {
 	return (
 		<>
 			<Head>
-				<meta property="og:title" content="moneyconvert" />
+				<meta property="og:title" content="moneyconvert - An Currency convert utility" />
+				<meta property="og:description" content="moneyconvert - An Currency convert utility made in nextjs " />
 				<meta property="og:type" content="website" />
 				<meta property="og:url" content="https://moneyconvert.vercel.app" />
-				<meta property="og:image" content="https://i.imgur.com/vuJxCal.png" />
+				<meta property="og:image" content="https://i.imgur.com/iPEUjzx.png" />
 			</Head>
 			<div className=" h-[100svh]  lg:w-screen lg:h-screen  flex flex-col justify-center items-center ">
 				<div className="  flex flex-col w-full h-full  items-center   justify-center  p-4  bg-white ">
